@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AuthService from "../../services/AuthService";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 
@@ -59,8 +60,57 @@ const A = styled(Link)`
 
 const SignupForm = () => {
 
+	const authService = new AuthService();
+
+	const [ pending, setPending ] = useState(false);
+	const [ error, setError ] = useState("");
+	const [ success, setSuccess ] = useState(false);
+	const [ input, setInput ] = useState({
+		email: "",
+		password: "",
+		repeatPassword: ""
+	});
+	
+	const handleInput = (e) => {
+		setInput({
+			...input,
+			[e.target.name]: e.target.value
+		})
+	}
+
+	const submit = async (e) => {
+		e.preventDefault();
+
+		setPending(true);
+		setError("");
+
+		try {
+			if(input.email.length === 0 ||
+			input.password === 0 ||
+			input.repeatPassword === 0) {
+				
+				throw new Error("Please fill all input fields");
+			}
+			else if(input.password !== input.repeatPassword) {
+				throw new Error("Passwords don't match");
+			}
+			else {
+				await authService.signUp(input.email, input.password);
+
+				setSuccess(true);
+				alert("success");
+			}
+		}
+		catch({ message }) {
+			// TODO: Show proper error messages
+			setError({ message })
+			alert(message);
+			setPending(false);
+		}
+	}
+
 	return (
-		<Form>
+		<Form onSubmit={e => submit(e)}>
 			<Title>Create an Account</Title>
 			<Field>
 				<Label htmlFor="email">E-mail:</Label>
@@ -70,6 +120,8 @@ const SignupForm = () => {
 					name="email"
 					autocomplete="off"
 					placeholder="johnsmith@hotmail.com" 
+					disabled={pending}
+					onChange={e => handleInput(e)}
 				/>
 			</Field>
 			<Field>
@@ -80,6 +132,8 @@ const SignupForm = () => {
 					name="password"
 					autocomplete="off"
 					placeholder="••••••••••••" 
+					disabled={pending}
+					onChange={e => handleInput(e)}
 				/>
 			</Field>
 			<Field>
@@ -87,13 +141,18 @@ const SignupForm = () => {
 				<InputField 
 					type="password"
 					id="repeat_password" 
-					name="repeat_password"
+					name="repeatPassword"
 					autocomplete="off"
 					placeholder="••••••••••••" 
+					disabled={pending}
+					onChange={e => handleInput(e)}
 				/>
 			</Field>
 			<Buttons>
-				<SubmitButton>Sign Up</SubmitButton>
+				<SubmitButton
+					type="submit"
+					disabled={pending}
+				>Sign Up</SubmitButton>
 				<A to="/auth/login">Login</A>
 			</Buttons>
 		</Form>
