@@ -33,6 +33,10 @@ const Window = styled("section")`
 	box-shadow: 7px 7px 20px #999;
 	border: 1px solid var(--border);
 	overflow: hidden;
+	
+	@media (max-width: 700px) {
+		width: 95%;
+	}
 `;
 
 const TitleBar = styled("div") `
