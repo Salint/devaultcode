@@ -64,7 +64,11 @@ const Button = styled("button")`
 	border-radius: 50%;
 `;
 
-const Modal = ({ closeModal, width, height, title }) => {
+const Content = styled("div")`
+	padding: 15px;
+`;
+
+const Modal = ({ closeModal, width, height, title, children }) => {
 
 	return (
 		<Container>
@@ -78,6 +82,7 @@ const Modal = ({ closeModal, width, height, title }) => {
 						<Button onClick={e => closeModal()}>X</Button>
 					</FlexItem>
 				</TitleBar>
+				<Content>{children}</Content>
 			</Window>
 		</Container>
 	);

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import LogoSrc from "../../assets/logo.png";
 import AuthService from "../../services/AuthService";
 import Button from "../atoms/Button";
-import Modal from "../molecules/Modal";
+import NewListModal from "./NewListModal";
 
 const Container = styled("header")`
 	width: 600px;
@@ -46,7 +46,7 @@ const Header = () => {
 
 	return (
 		<Container>
-			{modalOpened && <Modal title="Create a new list" width="500" height="250" closeModal={() => setModalOpened(false)}/>}
+			{modalOpened && <NewListModal closeModal={() => setModalOpened(false)}/>}
 			<FlexItem align="flex-start">
 				<Action onClick={async e => await authService.logOut()}><FontAwesomeIcon icon={faRightFromBracket} /></Action>
 			</FlexItem>
