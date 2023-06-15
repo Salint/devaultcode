@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider, Navigate } from 'react-router-dom';
+import { AuthProvider, IfFirebaseAuthed, IfFirebaseUnAuthed } from "./contexts/FirebaseAuthContext";
 
 // Pages
 import Login from "./pages/Login";
@@ -12,10 +13,17 @@ const App = () => {
 
 	const router = createBrowserRouter(
 		createRoutesFromElements(
-			<>
-				<Route exact path="/auth/signup" element={<Signup />} />
-				<Route exact path="/auth/login" element={<Login />} />
-			</>
+			<AuthProvider>
+				<IfFirebaseAuthed>
+					
+				</IfFirebaseAuthed>
+				<IfFirebaseUnAuthed>
+					<Route exact path="/auth/signup" element={<Signup />} />
+					<Route exact path="/auth/login" element={<Login />} />
+
+					<Route path="*" element={<Navigate to="/auth/login" />}/>
+				</IfFirebaseUnAuthed>
+			</AuthProvider>
 		)
 	);
 
