@@ -26,7 +26,6 @@ const Window = styled("section")`
 	top: 50%;
 	left: 50%;
 	width: ${props => props.width + "px"};
-	height ${props => props.height + "px"};
 	transform: translate(-50%, -50%);
 	background: var(--background-primary);
 	border-radius: 10px;
