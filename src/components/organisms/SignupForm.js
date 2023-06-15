@@ -69,7 +69,6 @@ const SignupForm = () => {
 
 	const [ pending, setPending ] = useState(false);
 	const [ error, setError ] = useState("");
-	const [ success, setSuccess ] = useState(false);
 	const [ input, setInput ] = useState({
 		email: "",
 		password: "",
@@ -101,9 +100,6 @@ const SignupForm = () => {
 			}
 			else {
 				await authService.signUp(input.email, input.password);
-
-				setSuccess(true);
-				alert("success");
 			}
 		}
 		catch({ message, code }) {

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { AuthProvider, IfFirebaseAuthed, IfFirebaseUnAuthed } from "./contexts/FirebaseAuthContext";
+import Home from "./pages/Home";
 
 // Pages
 import Login from "./pages/Login";
@@ -18,6 +19,7 @@ const App = () => {
 				element: (
 					<AuthProvider>
 						<IfFirebaseUnAuthed><Signup /></IfFirebaseUnAuthed>
+						<IfFirebaseAuthed><Navigate to="/" /></IfFirebaseAuthed>
 					</AuthProvider>
 				)
 			},
@@ -26,6 +28,16 @@ const App = () => {
 				element: (
 					<AuthProvider>
 						<IfFirebaseUnAuthed><Login /></IfFirebaseUnAuthed>
+						<IfFirebaseAuthed><Navigate to="/" /></IfFirebaseAuthed>
+					</AuthProvider>
+				)
+			},
+			{
+				path: "/",
+				element: (
+					<AuthProvider>
+						<IfFirebaseAuthed><Home /></IfFirebaseAuthed>
+						<IfFirebaseUnAuthed><Navigate to="/auth/login" /></IfFirebaseUnAuthed>
 					</AuthProvider>
 				)
 			},
@@ -34,6 +46,7 @@ const App = () => {
 				element: (
 					<AuthProvider>
 						<IfFirebaseUnAuthed><Navigate to="/auth/login" /></IfFirebaseUnAuthed>
+						<IfFirebaseAuthed><Navigate to="/" /></IfFirebaseAuthed>
 					</AuthProvider>
 				)
 			}

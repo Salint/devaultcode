@@ -68,7 +68,6 @@ const LoginForm = () => {
 
 	const [ pending, setPending ] = useState(false);
 	const [ error, setError ] = useState("");
-	const [ success, setSuccess ] = useState(false);
 	const [ input, setInput ] = useState({
 		email: "",
 		password: ""
@@ -95,9 +94,6 @@ const LoginForm = () => {
 			}
 			else {
 				await authService.logIn(input.email, input.password);
-
-				setSuccess(true);
-				alert("success");
 			}
 		}
 		catch({ message, code }) {
@@ -128,7 +124,7 @@ const LoginForm = () => {
 	return (
 		<Form onSubmit={e => submit(e)}>
 			<Title>Access your account</Title>
-			{ error.length > 0 && <ErrorElement>{error}</ErrorElement>}
+			{ error.length > 0 && <ErrorElement>{error}</ErrorElement> }
 			<Field>
 				<Label htmlFor="email">E-mail:</Label>
 				<InputField 
