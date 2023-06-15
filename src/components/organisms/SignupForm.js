@@ -58,6 +58,11 @@ const A = styled(Link)`
 	padding: 10px;
 `;
 
+
+const ErrorElement = styled("p")`
+	color: red;	
+`;
+
 const SignupForm = () => {
 
 	const authService = new AuthService();
@@ -86,8 +91,8 @@ const SignupForm = () => {
 
 		try {
 			if(input.email.length === 0 ||
-			input.password === 0 ||
-			input.repeatPassword === 0) {
+			input.password.length === 0 ||
+			input.repeatPassword.length === 0) {
 				
 				throw new Error("Please fill all input fields");
 			}
@@ -101,10 +106,24 @@ const SignupForm = () => {
 				alert("success");
 			}
 		}
-		catch({ message }) {
-			// TODO: Show proper error messages
-			setError({ message })
-			alert(message);
+		catch({ message, code }) {
+			if(code) {
+				if(code === "auth/email-already-in-use") {
+					setError("E-mail is already in use");
+				}
+				else if(code === "auth/invalid-email") {
+					setError("Invalid E-mail provided");
+				}
+				else if(code === "auth/weak-password") {
+					setError("Your password is too weak");
+				}
+				else {
+					setError("An unknown error has occured");
+				}
+			}
+			else {
+				setError(message);
+			}
 			setPending(false);
 		}
 	}
@@ -112,6 +131,7 @@ const SignupForm = () => {
 	return (
 		<Form onSubmit={e => submit(e)}>
 			<Title>Create an Account</Title>
+			{ error.length > 0 && <ErrorElement>{error}</ErrorElement>}
 			<Field>
 				<Label htmlFor="email">E-mail:</Label>
 				<InputField 

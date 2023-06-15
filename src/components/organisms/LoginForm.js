@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AuthService from "../../services/AuthService";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 
@@ -57,11 +58,77 @@ const A = styled(Link)`
 	padding: 10px;
 `;
 
+const ErrorElement = styled("p")`
+	color: red;
+`;
+
 const LoginForm = () => {
 
+	const authService = new AuthService();
+
+	const [ pending, setPending ] = useState(false);
+	const [ error, setError ] = useState("");
+	const [ success, setSuccess ] = useState(false);
+	const [ input, setInput ] = useState({
+		email: "",
+		password: ""
+	});
+	
+	const handleInput = (e) => {
+		setInput({
+			...input,
+			[e.target.name]: e.target.value
+		})
+	}
+
+	const submit = async (e) => {
+		e.preventDefault();
+
+		setPending(true);
+		setError("");
+
+		try {
+			if(input.email.length === 0 ||
+			input.password === 0) {
+				
+				throw new Error("Please fill all input fields");
+			}
+			else {
+				await authService.logIn(input.email, input.password);
+
+				setSuccess(true);
+				alert("success");
+			}
+		}
+		catch({ message, code }) {
+			if(code) {
+				if(code === "auth/user-disabled") {
+					setError("User has been banned");
+				}
+				else if(code === "auth/invalid-email") {
+					setError("Invalid E-mail provided");
+				}
+				else if(code === "auth/user-not-found") {
+					setError("User doesn't exist");
+				}
+				else if(code === "auth/wrong-password") {
+					setError("Incorrect password");
+				}
+				else {
+					setError("An unknown error has occured");
+				}
+			}
+			else {
+				setError(message);
+			}
+			setPending(false);
+		}
+	}
+
 	return (
-		<Form>
+		<Form onSubmit={e => submit(e)}>
 			<Title>Access your account</Title>
+			{ error.length > 0 && <ErrorElement>{error}</ErrorElement>}
 			<Field>
 				<Label htmlFor="email">E-mail:</Label>
 				<InputField 
@@ -70,6 +137,8 @@ const LoginForm = () => {
 					name="email"
 					autocomplete="off"
 					placeholder="johnsmith@hotmail.com" 
+					disabled={pending}
+					onChange={e => handleInput(e)}
 				/>
 			</Field>
 			<Field>
@@ -80,10 +149,15 @@ const LoginForm = () => {
 					name="password"
 					autocomplete="off"
 					placeholder="••••••••••••" 
+					disabled={pending}
+					onChange={e => handleInput(e)}
 				/>
 			</Field>
 			<Buttons>
-				<SubmitButton>Login</SubmitButton>
+				<SubmitButton
+					type="submit"
+					disabled={pending}
+				>Login</SubmitButton>
 				<A to="/auth/signup">Sign up</A>
 			</Buttons>
 		</Form>
