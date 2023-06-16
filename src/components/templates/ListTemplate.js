@@ -9,10 +9,18 @@ const Container = styled("section")`
 	position: relative;
 `;
 
+const Header = styled("section")`
+	border-bottom: 2px solid var(--secondary);
+	padding-bottom: 10px;
+`;
+
 const Title = styled("h1")`
 	font-size: 40px;
-	border-bottom: 2px solid var(--secondary);
-	padding-bottom: 20px;
+`;
+
+const P = styled("p")`
+	color: gray;
+	margin-top: 15px;
 `;
 
 const List = styled("ul")`
@@ -30,7 +38,10 @@ const ListTemplate = ({ list, pending, error }) => {
 			{ (!pending && error) && <h1>Error has occured</h1> }
 			{ (!pending && !error) && 
 				<Container>
-					<Title>{list.name}</Title>
+					<Header>
+						<Title>{list.name}</Title>
+						<P>Last Modified on {list.modifiedAt.toDate().toLocaleString()}</P>
+					</Header>
 					<List>
 						{list.items.map((item, index) => <ListItem index={index} item={item} />)}
 					</List>
