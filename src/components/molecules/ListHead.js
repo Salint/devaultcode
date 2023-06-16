@@ -25,8 +25,8 @@ const Tag = styled("label")`
 	}
 `;
 
-const ListHead = ({ order, title, tags }) => (
-	<Container>
+const ListHead = ({ order, title, tags, onClick }) => (
+	<Container onClick={onClick}>
 		<FlexItem align="flex-start">
 			<h2>{order}. {title}</h2>
 		</FlexItem>

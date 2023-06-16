@@ -26,6 +26,19 @@ const Description = styled("p")`
 		color: darkgray;
 	}
 `;
+const Code = styled("code")`
+	background: #353535;
+	color: white;
+	white-space: pre-wrap;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	span + span {
+		margin-top: 5px;
+	}
+`;
 
 
 const ListItem = ({ index, item }) => {
@@ -35,9 +48,10 @@ const ListItem = ({ index, item }) => {
 	const [ opened, setOpened ] = useState(false);
 
 	return (
-		<Container opened={opened} onClick={e => setOpened(!opened)}>
-			<ListHead order={index + 1} title={title} tags={tags} />
+		<Container opened={opened}>
+			<ListHead onClick={e => setOpened(!opened)} order={index + 1} title={title} tags={tags} />
 			{ description ? <Description>{description}</Description> : <Description><i>Description not provided.</i></Description>}
+			{ code && <Code>{code.split("\\n").map(line => <span>{line}</span>)}</Code> }
 		</Container>
 	);
 };
