@@ -22,16 +22,20 @@ const List = styled("ul")`
 	margin-top: 20px;
 `;
 
-const ListTemplate = () => {
+const ListTemplate = ({ list, pending, error }) => {
 
 	return (
 		<PageTemplate>
-			<Container>
-				<Title>My cool list</Title>
-				<List>
-					<ListItem order={1} title="First Item" tags={["html", "css", "javascript"]} />
-				</List>
-			</Container>
+			{ pending && <h1>Loading</h1> }
+			{ (!pending && error) && <h1>Error has occured</h1> }
+			{ (!pending && !error) && 
+				<Container>
+					<Title>{list.name}</Title>
+					<List>
+						{list.items.map((item, index) => <ListItem index={index} item={item} />)}
+					</List>
+				</Container> 
+			}
 		</PageTemplate>
 	)
 };

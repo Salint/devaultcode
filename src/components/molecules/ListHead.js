@@ -5,7 +5,7 @@ const Container = styled("div")`
 	display: flex;
 	align-items: center;
 	cursor: pointer;
-	height: 54px;
+	height: 58px;
 `;
 
 const FlexItem = styled("div")`
@@ -18,7 +18,7 @@ const Tag = styled("label")`
 	background: var(--secondary);
 	padding: 5px;
 	border-radius: 5px;
-
+	color: white;
 
 	+ label {
 		margin-left: 5px;
