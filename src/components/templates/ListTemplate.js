@@ -43,7 +43,7 @@ const ListTemplate = ({ list, pending, error }) => {
 						<P>Last Modified on {list.modifiedAt.toDate().toLocaleString()}</P>
 					</Header>
 					<List>
-						{list.items.map((item, index) => <ListItem index={index} item={item} />)}
+						{list.items && list.items.map((item, index) => <ListItem index={index} item={item} />)}
 					</List>
 				</Container> 
 			}
