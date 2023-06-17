@@ -25,7 +25,6 @@ const List = () => {
 				}
 			}
 			catch(e) {
-				alert(e.message);
 				setError(true);
 			}
 			finally {

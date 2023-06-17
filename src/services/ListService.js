@@ -1,5 +1,5 @@
 import app from "./FirebaseService";
-import { addDoc, collection, doc, getDoc, getFirestore, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, where } from "firebase/firestore";
 
 const firestore = getFirestore(app);
 
@@ -19,6 +19,11 @@ class ListService {
 		const result = await getDoc(doc(firestore, "lists", listid));
 		
 		return result;
+	}
+	async getLists(uid) {
+		const result = await getDocs(query(collection(firestore, "lists"), where("user", "==", uid), orderBy("createdAt")));
+		
+		return result.docs;
 	}
 }
 
