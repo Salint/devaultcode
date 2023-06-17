@@ -7,11 +7,12 @@ const Container = styled("div")`
 	left: 0;
 	width: 100vw;
 	height: 100vh;
+	z-index: 1;
 `;
 
 const Background = styled("div")`
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -22,7 +23,7 @@ const Background = styled("div")`
 
 const Window = styled("section")`
 	position: absolute;
-	z-index: 2;
+	z-index: 3;
 	top: 50%;
 	left: 50%;
 	width: ${props => props.width + "px"};
