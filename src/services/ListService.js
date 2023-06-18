@@ -1,5 +1,5 @@
 import app from "./FirebaseService";
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 
 const firestore = getFirestore(app);
 
@@ -14,6 +14,23 @@ class ListService {
 		});
 
 		return doc.id;
+	}
+	async createListItem(id, title, description, tags) {
+		
+		let items = [];
+		const list = await this.getList(id);
+	
+		items = list.data().items ? list.data().items : [];
+		items.push({
+			title,
+			description,
+			tags: tags.toString().split(",")
+		});
+
+		await updateDoc(doc(firestore, "lists", id), {
+			items,
+			modifiedAt: serverTimestamp()
+		});
 	}
 	async getList(listid) {
 		const result = await getDoc(doc(firestore, "lists", listid));

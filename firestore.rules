@@ -9,9 +9,8 @@ service cloud.firestore {
           request.resource.data.createdAt == request.time &&
           request.resource.data.modifiedAt == request.time
       allow update: if request.auth != null &&
-          request.resource.data.user == request.auth.uid &&
           request.resource.data.modifiedAt == request.time &&
-          (!request.resource.data.keys().hasAny(["createdAt"]))
+          !("createdAt" in request.writeFields)
     }
   }
 }

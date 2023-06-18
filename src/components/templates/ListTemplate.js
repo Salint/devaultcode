@@ -1,6 +1,10 @@
-import React from "react";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Button from "../atoms/Button";
 import ListItem from "../organisms/ListItem";
+import NewItemModal from "../organisms/NewItemModal";
 import PageTemplate from "./PageTemplate";
 
 const Container = styled("section")`
@@ -21,6 +25,7 @@ const Title = styled("h1")`
 const P = styled("p")`
 	color: gray;
 	margin-top: 15px;
+	margin-bottom: 10px;
 `;
 
 const List = styled("ul")`
@@ -30,7 +35,9 @@ const List = styled("ul")`
 	margin-top: 20px;
 `;
 
-const ListTemplate = ({ list, pending, error }) => {
+const ListTemplate = ({ id, list, pending, error }) => {
+
+	const [ modalOpened, setModalOpened ] = useState(false);
 
 	return (
 		<PageTemplate>
@@ -38,9 +45,11 @@ const ListTemplate = ({ list, pending, error }) => {
 			{ (!pending && error) && <h1>Error has occured</h1> }
 			{ (!pending && !error) && 
 				<Container>
+					{modalOpened && <NewItemModal closeModal={() => setModalOpened(false)} id={id} />}
 					<Header>
 						<Title>{list.name}</Title>
 						<P>Last Modified on {list.modifiedAt.toDate().toLocaleString()}</P>
+						<Button onClick={e => setModalOpened(true)}><FontAwesomeIcon icon={faPlus} /> Add Item</Button>
 					</Header>
 					<List>
 						{list.items && list.items.map((item, index) => <ListItem index={index} item={item} />)}

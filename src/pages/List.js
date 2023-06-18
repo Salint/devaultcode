@@ -39,7 +39,7 @@ const List = () => {
 		return <h1>List doesn't exist</h1>;
 	}
 
-	return <ListTemplate pending={pending} error={error} list={data}></ListTemplate>;
+	return <ListTemplate pending={pending} error={error} list={data} id={id}></ListTemplate>;
 }
 
 export default List;
