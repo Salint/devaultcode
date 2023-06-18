@@ -61,9 +61,8 @@ const NewListModal = ({ closeModal }) => {
 			else {
 				setListId(await listService.createList(auth.currentUser.uid, input));
 
-				closeModal();
 				setSuccess(true);
-			}
+			}	
 		}
 		catch({ message }) {
 			if(message && message.length > 0) {
