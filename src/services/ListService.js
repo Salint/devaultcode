@@ -1,5 +1,5 @@
 import app from "./FirebaseService";
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 
 const firestore = getFirestore(app);
 
@@ -36,6 +36,12 @@ class ListService {
 		const result = await getDoc(doc(firestore, "lists", listid));
 		
 		return result;
+	}
+	async listenToList(listid, setData) {
+		onSnapshot(doc(firestore, "lists", listid), (doc) => {
+			if(!doc.metadata.hasPendingWrites) setData(doc.data());
+		});
+		
 	}
 	async getLists(uid) {
 		const result = await getDocs(query(collection(firestore, "lists"), where("user", "==", uid), orderBy("createdAt")));

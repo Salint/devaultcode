@@ -21,6 +21,7 @@ const List = () => {
 
 				if(doc.exists()) {
 					setData(doc.data());
+					listService.listenToList(id, setData);
 					setExists(true);
 				}
 			}
