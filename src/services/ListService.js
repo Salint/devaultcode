@@ -48,6 +48,19 @@ class ListService {
 		
 		return result.docs;
 	}
+
+	async deleteListItem(listid, index) {
+		let items = [];
+		const list = await this.getList(listid);
+	
+		items = list.data().items ? list.data().items : [];
+		items.splice(index);
+
+		await updateDoc(doc(firestore, "lists", listid), {
+			items,
+			modifiedAt: serverTimestamp()
+		});
+	}
 }
 
 export default ListService;

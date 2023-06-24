@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import ListHead from "../molecules/ListHead";
+import DeleteItemModal from "./DeleteItemModal";
 
 const Container = styled("li")`
 	width: 100%;
@@ -39,19 +40,33 @@ const Code = styled("code")`
 		margin-top: 5px;
 	}
 `;
+const Button = styled("button")`
+	color: white;
+	border: none;
+	background: #882222;
+	margin-bottom: 10px;
+	font-size: 15px;
+	padding: 8px 20px;
+	border-radius: 10px;
+	cursor: pointer;
+
+`;
 
 
-const ListItem = ({ index, item }) => {
+const ListItem = ({ index, listid, item }) => {
 	
 	const { title, tags, description, code } = item;
 
 	const [ opened, setOpened ] = useState(false);
+	const [ deleteModalOpened, setDeleteModalOpened ] = useState(false);
 
 	return (
 		<Container opened={opened}>
+			{ deleteModalOpened && <DeleteItemModal listid={listid} title={title} index={index} closeModal={e => setDeleteModalOpened(false)} />}
 			<ListHead onClick={e => setOpened(!opened)} order={index + 1} title={title} tags={tags} />
 			{ description ? <Description>{description}</Description> : <Description><i>Description not provided.</i></Description>}
 			{ code && <Code>{code.split("\\n").map(line => <span>{line}</span>)}</Code> }
+			<Button onClick={e => setDeleteModalOpened(true)}>Delete</Button>
 		</Container>
 	);
 };

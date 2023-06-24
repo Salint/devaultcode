@@ -52,7 +52,7 @@ const ListTemplate = ({ id, list, pending, error }) => {
 						<Button onClick={e => setModalOpened(true)}><FontAwesomeIcon icon={faPlus} /> Add Item</Button>
 					</Header>
 					<List>
-						{list.items && list.items.map((item, index) => <ListItem index={index} item={item} />)}
+						{list.items && list.items.map((item, index) => <ListItem index={index} item={item} listid={id} />)}
 					</List>
 				</Container> 
 			}
