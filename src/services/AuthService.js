@@ -2,7 +2,9 @@ import app from "./FirebaseService";
 import { getAuth, 
 	createUserWithEmailAndPassword, 
 	signInWithEmailAndPassword, 
-	sendEmailVerification } from "firebase/auth";
+	sendEmailVerification, 
+	signOut
+} from "firebase/auth";
 
 const auth = getAuth(app);
 
@@ -16,6 +18,9 @@ class AuthService {
 	async logIn(email, password) {
 
 		await signInWithEmailAndPassword(auth, email, password);
+	}
+	async logOut() {
+		await signOut(auth);
 	}
 
 }
